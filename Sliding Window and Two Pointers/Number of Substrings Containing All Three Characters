@@ -1,0 +1,24 @@
+// Q Given a string s consisting only of characters a, b and c. 
+Return the number of substrings containing at least one occurrence of all these characters a, b and c.//
+
+SOLUTION:
+
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+        int n = s.length();
+        vector<int> hash(3,0);
+        int l = 0, r = 0;
+        int count = 0;
+        while(r<n){
+            hash[s[r]-'a']++;
+            while(hash[0]>=1 && hash[1]>=1 && hash[2]>=1){
+                count += n-r;
+                hash[s[l]-'a']--;
+                l++;
+            }
+            r++;
+        }
+        return count;
+    }
+};
