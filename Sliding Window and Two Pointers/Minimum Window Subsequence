@@ -1,0 +1,35 @@
+//QUESTION:
+Given strings str1 and str2 containing lowercase English letters, find the minimum (contiguous) substring w of str1, so that str2 is a subsequence of w.
+If there is no such window in str1 that covers all characters in str2, return the empty string.
+If there are multiple such minimum-length windows, return the one with the left-most starting index.
+//
+
+SOLUTION: TC = O(N*N)  SC = O(1)
+
+string minWindow(string& str1, string& str2) {
+    int n = str1.size();
+    int m = str2.size();
+    int minLen = INT_MAX;
+    int sIndex = -1;
+    int i = 0, j = 0;
+    
+    while(i < n){
+        int l = i;
+        j = 0;  // Reset j before each new iteration of i
+        while(l < n && j < m){
+            if(str1[l] == str2[j]){
+                j++;  // Increment j only on match
+            }
+            l++;
+        }
+        if(j == m){  // If all characters of str2 are matched
+            if(minLen > l - i){
+                minLen = l - i;
+                sIndex = i;
+            }
+        }
+        i++;
+    }
+    
+    return sIndex == -1 ? "" : str1.substr(sIndex, minLen);
+}
