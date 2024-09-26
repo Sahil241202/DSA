@@ -1,0 +1,49 @@
+//QUESTION 
+Given two strings s and t of lengths m and n respectively, return the minimum window substring of s
+such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string "".
+The testcases will be generated such that the answer is unique.
+//
+
+SOLUTION: TC = O(2N + M)  SC = O(256)
+
+
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        int n = s.length(), m = t.length();
+        if (m > n)
+            return ""; // If t is larger than s, no window is possible
+
+        int l = 0, r = 0, cnt = 0;
+        int sIndex = -1, minLen = INT_MAX;
+        vector<int> hash(128, 0); // Use 128 for ASCII characters
+
+        // Initialize hash map for t
+        for (char c : t) {
+            hash[c]++;
+        }
+
+        // Sliding window
+        while (r < n) {
+            if (hash[s[r]] > 0)
+                cnt++;
+            hash[s[r]]--;
+            r++;
+
+            // When all characters are matched
+            while (cnt == m) {
+                if (r - l< minLen) {
+                    minLen = r - l;
+                    sIndex = l;
+                }
+
+                hash[s[l]]++;
+                if (hash[s[l]] > 0)
+                    cnt--;
+                l++;
+            }
+        }
+
+        return sIndex == -1 ? "" : s.substr(sIndex, minLen);
+    }
+};
